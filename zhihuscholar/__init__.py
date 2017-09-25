@@ -1,0 +1,1 @@
+from .zhihuscholar import app
