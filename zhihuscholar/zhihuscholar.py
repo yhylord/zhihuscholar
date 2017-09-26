@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import sqlite3
 
 
@@ -7,8 +7,8 @@ app.config.from_object('config')
 
 
 @app.route('/')
-def hello():
-    return "Hello, world!"
+def index():
+    return render_template('index.html', title='Home')
 
 
 def connect_db():
