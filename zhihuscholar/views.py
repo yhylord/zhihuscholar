@@ -1,7 +1,7 @@
 from flask import session, render_template, redirect, url_for
 from flask_login import login_user
-from zhihuscholar import app, bcrypt, login_manager
-from .forms import LoginForm
+from zhihuscholar import app, bcrypt, db, login_manager
+from .forms import LoginForm, RegisterForm
 from .models import User
 
 
@@ -9,6 +9,22 @@ from .models import User
 @app.route('/index')
 def index():
     return render_template('index.html', title='Home')
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    # TODO Check for unique user
+    # TODO Send confirmation email
+    # TODO Add captcha
+    form = RegisterForm()
+    if form.validate_on_submit():
+        password = form.password.data
+        password_hash = bcrypt.generate_password_hash(password)
+        new_user = User(name=form.name.data, email=form.email.data, password=password_hash)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Register', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])

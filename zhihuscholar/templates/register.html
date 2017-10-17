@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block main %}
+<main class="mdui-m-t-5" id="main">
+    <div class="mdui-container">
+        <div class="mdui-row">
+            <div class="mdui-card mdui-col-md-4 mdui-col-offset-md-4" id="login">
+                <div class="mdui-typo-headline-opacity">Register</div>
+                <form action="" method="post" name="login">
+                    <div class="mdui-textfield">
+                        <!-- TODO: Display errors -->
+                        {{ form.hidden_tag() }}
+                        {{ form.name(size=64, class='mdui-textfield-input', placeholder='Nickname') }}
+                        {{ form.email(size=128, class='mdui-textfield-input', placeholder='Email') }}
+                        {{ form.password(size=128, class='mdui-textfield-input', placeholder='Password') }}
+                        {{ form.confirm(size=128, class='mdui-textfield-input', placeholder='Confirm Password') }}
+                        <input class="mdui-btn mdui-float-right" type="submit" value="Login">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
