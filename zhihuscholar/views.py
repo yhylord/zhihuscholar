@@ -37,8 +37,7 @@ def login():
             password_hash = registered_user.password
             password = form.password.data
             if bcrypt.check_password_hash(password_hash, password):
-                login_user(registered_user)
-                session['remember_me'] = form.remember_me.data
+                login_user(registered_user, remember=form.remember_me.data)
                 return redirect(url_for('index'))
     return render_template('login.html', title='Login', form=form)
 
