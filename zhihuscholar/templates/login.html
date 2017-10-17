@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block main %}
+<main class="mdui-m-t-5" id="main">
+    <div class="mdui-container">
+        <div class="mdui-row">
+            <div class="mdui-card mdui-col-md-4 mdui-col-offset-md-4" id="login">
+                <div class="mdui-typo-headline-opacity">Login</div>
+                <div class="mdui-textfield">
+                    {{ form.hidden_tag() }}
+                    <input name="email" class="mdui-textfield-input" placeholder="Email" size="128">
+                    <input name="password" type="password" class="mdui-textfield-input" placeholder="Password" size="128">
+                    <label class="mdui-checkbox">
+                        <input name="remember_me" type="checkbox">
+                        <i class="mdui-checkbox-icon"></i>
+                        Remember Me
+                    </label>
+                    <input class="mdui-btn mdui-float-right" type="submit" value="Login">
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
