@@ -1,5 +1,5 @@
 from flask import session, render_template, redirect, url_for
-from flask_login import login_user
+from flask_login import login_user, logout_user
 from zhihuscholar import app, bcrypt, db, login_manager
 from .forms import LoginForm, RegisterForm
 from .models import User
@@ -41,6 +41,12 @@ def login():
                 session['remember_me'] = form.remember_me.data
                 return redirect(url_for('index'))
     return render_template('login.html', title='Login', form=form)
+
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 
 @login_manager.user_loader
