@@ -3,10 +3,11 @@
 <main class="mdui-m-t-5" id="main">
     <div class="mdui-container">
         <div class="mdui-row">
-            <div class="mdui-card mdui-col-md-4 mdui-col-offset-md-4" id="login">
+            <div class="mdui-card mdui-col-md-4 mdui-col-offset-md-4 login-form">
                 <div class="mdui-typo-headline-opacity">Login</div>
-                <form action="/login" method="post" name="login">
+                <form action="" method="post" name="login">
                     <div class="mdui-textfield">
+                        <!-- TODO: Display errors -->
                         {{ form.hidden_tag() }}
                         {{ form.email(size=128, class='mdui-textfield-input', placeholder='Email') }}
                         {{ form.password(size=128, class='mdui-textfield-input', placeholder='Password') }}
