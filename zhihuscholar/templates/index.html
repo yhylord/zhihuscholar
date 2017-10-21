@@ -1,16 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }} - Zhihu Scholar</title>
-    <link href="//cdn.bootcss.com/mdui/0.3.0/css/mdui.min.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/mdui/0.3.0/js/mdui.min.js" defer></script>
-</head>
-<body>
-    <header class="mdui-appbar">
-        <div class="mdui-toolbar">
-            <a href="./" class="mdui-typo-headline">Zhihu Scholar</a>
+{% extends "base.html" %}
+{% block main %}
+<main class="mdui-m-t-5" id="main">
+    <div class="mdui-container">
+        <div class="mdui-row">
+            <div class="mdui-card mdui-col-md-8 mdui-col-offset-md-2">
+                <div class="mdui-card-primary">
+                    <div class="mdui-card-header-title">《学而》篇（一）</div>
+                    <div class="mdui-card-header-subtitle">论语</div>
+                </div>
+                <div class="mdui-card-content">
+                    <div class="mdui-typo">
+                        《学而》是《论语》第一篇的篇名。《论语》中各篇一般都是以第一章的前二三个字作为该篇的篇名。《学而》一篇包括16章，内容涉及诸多方面。其中重点是「吾日三省吾身」；「节用而爱人，使民以时」；「礼之用，和为贵」以及仁、孝、信等道德范畴。
+                        <!-- TODO Add collapse -->
+                    </div>
+                </div>
+                <div class="mdui-card-actions">
+                    <button class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">favorite_border</i></button>
+                    <button class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">delete</i></button>
+                    <button class="mdui-btn mdui-btn-icon mdui-float-right"><i class="mdui-icon material-icons">expand_more</i></button>
+                </div>
+            </div>
         </div>
-    </header>
-</body>
-</html>
+    </div>
+</main>
+{% endblock %}
