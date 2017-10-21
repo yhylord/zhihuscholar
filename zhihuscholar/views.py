@@ -1,5 +1,5 @@
 from flask import session, render_template, redirect, url_for
-from flask_login import login_user, logout_user
+from flask_login import login_required, login_user, logout_user
 from zhihuscholar import app, bcrypt, db, login_manager
 from .forms import LoginForm, RegisterForm
 from .models import User
@@ -42,7 +42,8 @@ def login():
     return render_template('login.html', title='Login', form=form)
 
 
-@app.route('/logout', methods=['POST'])
+@app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))

@@ -16,8 +16,12 @@
                 <div class="mdui-toolbar">
                     <a href="./" class="mdui-typo-headline">Zhihu Scholar</a>
                     <div class="mdui-toolbar-spacer"></div>
+                    {% if current_user.is_authenticated %}
+                    <a href="/logout">Logout</a>
+                    {% else %}
                     <a href="/login">Login</a>
                     <a href="/register">Register</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
