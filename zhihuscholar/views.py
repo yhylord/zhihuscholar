@@ -1,4 +1,4 @@
-from flask import session, render_template, redirect, url_for
+from flask import render_template, redirect, url_for
 from flask_login import login_required, login_user, logout_user
 from zhihuscholar import app, bcrypt, db, login_manager
 from .forms import LoginForm, RegisterForm
@@ -23,7 +23,8 @@ def register():
         new_user = User(name=form.name.data, email=form.email.data, password=password_hash)
         db.session.add(new_user)
         db.session.commit()
-        return redirect(url_for('login'))
+        login_user(new_user)
+        return redirect(url_for('index'))
     return render_template('register.html', title='Register', form=form)
 
 
