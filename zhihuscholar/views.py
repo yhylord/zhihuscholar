@@ -2,13 +2,14 @@ from flask import render_template, redirect, url_for
 from flask_login import login_required, login_user, logout_user
 from zhihuscholar import app, bcrypt, db, login_manager
 from .forms import LoginForm, RegisterForm
-from .models import User
+from .models import Article, User
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', title='Home')
+    articles = [Article.query.get(1)] # TODO replace placeholder
+    return render_template('index.html', title='Home', articles=articles)
 
 
 @app.route('/register', methods=['GET', 'POST'])
