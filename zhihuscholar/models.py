@@ -1,4 +1,6 @@
 from zhihuscholar import db
+from sklearn.naive_bayes import MultinomialNB
+import numpy as np
 
 
 class User(db.Model):
@@ -9,6 +11,8 @@ class User(db.Model):
     password = db.Column(db.String(128))
 
     feedback = db.relationship('Feedback')
+
+    recommender = db.relationship('Recommender', back_populates='user')
 
     @property
     def is_authenticated(self):
@@ -24,6 +28,9 @@ class User(db.Model):
 
     def get_id(self):
         return str(self.id)
+
+    def is_recommendable(self):
+        return len(self.feedback) > 10
 
     def __repr__(self):
         return '<User {0!r}>'.format(self.name)
@@ -75,3 +82,30 @@ class Feedback(db.Model):
     opinion = db.Column(db.String, nullable=False)
 
     article = db.relationship('Article')
+
+
+class Recommender(db.Model):
+    __tablename__ = 'recommenders'
+    recommender = db.Column(db.PickleType)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True, nullable=False)
+    user = db.relationship('User', back_populates='recommender')
+
+    def __repr__(self):
+        return '<Recommender for user_id={}>'.format(self.user_id)
+
+    def fit(self):
+        features = []
+        opinions = []
+        for feedback in self.user.feedback:
+            features.append(feedback.article.feature)
+            opinions.append(feedback.opinion)
+        self.recommender = MultinomialNB().fit(features, opinions)
+
+    def recommend(self, k):
+        features = [article.feature for article in Article.query.all()]
+        probs = self.recommender.predict_proba(features)
+        like_idx, = np.where(self.recommender.classes_ == 'like')
+        like_probs = probs[:, like_idx]
+        article_ids = np.argpartition(like_probs, range(k))[:k]
+        return Article.filter(Article.id.in_(article_ids)).all()

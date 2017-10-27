@@ -1,5 +1,6 @@
 from flask import jsonify, render_template, redirect, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
+from sqlalchemy.sql import func
 from zhihuscholar import app, bcrypt, db, login_manager
 from .forms import LoginForm, RegisterForm
 from .models import Article, Feedback, User
@@ -8,7 +9,10 @@ from .models import Article, Feedback, User
 @app.route('/')
 @app.route('/index')
 def index():
-    articles = [Article.query.get(1)] # TODO replace placeholder
+    if current_user.is_authenticated and current_user.is_recommendable():
+        articles = current_user.recommender.recommend(5)
+    else:
+        articles = Article.query.order_by(func.random()).limit(5).all()
     return render_template('index.html', title='Home', articles=articles)
 
 
