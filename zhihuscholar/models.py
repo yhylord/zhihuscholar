@@ -8,6 +8,8 @@ class User(db.Model):
     email = db.Column(db.String(128), index=True, unique=True)
     password = db.Column(db.String(128))
 
+    feedback = db.relationship('Feedback')
+
     @property
     def is_authenticated(self):
         return True
@@ -64,3 +66,12 @@ class Article(db.Model):
 
     def __repr__(self):
         return '<Article {0!r}>'.format(self.title)
+
+
+class Feedback(db.Model):
+    __tablename__ = 'feedback'
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True, nullable=False)
+    article_id = db.Column(db.Integer, db.ForeignKey('articles.id'), primary_key=True, nullable=False)
+    opinion = db.Column(db.String, nullable=False)
+
+    article = db.relationship('Article')

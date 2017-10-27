@@ -1,4 +1,31 @@
 {% extends "base.html" %}
+{% block script %}
+<script type="text/javascript">
+    var $$ = mdui.JQ;
+    SCRIPT_ROOT = {{ request.script_root|tojson }};
+    var update = function () {
+        var article_id = $$(this).attr('data-id');
+        var opinion = $$(this).attr('data-opinion');
+        console.log(article_id);
+        console.log(opinion);
+        $$.ajax({
+            method: 'POST',
+            url: SCRIPT_ROOT + '/_update_feedback',
+            data: {
+                article_id: article_id,
+                opinion: opinion
+            }
+            // TODO add feedback on the page
+            /*success: function () {
+                if (opinion === 'like') {
+                    var icon = $(this).children()[0]
+                }
+            }*/
+        });
+    };
+    $$('.feedback').on('click', update);
+</script>
+{% endblock %}
 {% block main %}
 <main class="mdui-m-t-5" id="main">
     <div class="mdui-container">

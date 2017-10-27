@@ -1,8 +1,8 @@
-from flask import render_template, redirect, url_for
-from flask_login import login_required, login_user, logout_user
+from flask import jsonify, render_template, redirect, request, url_for
+from flask_login import current_user, login_required, login_user, logout_user
 from zhihuscholar import app, bcrypt, db, login_manager
 from .forms import LoginForm, RegisterForm
-from .models import Article, User
+from .models import Article, Feedback, User
 
 
 @app.route('/')
@@ -54,6 +54,24 @@ def logout():
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+
+@app.route('/_update_feedback', methods=['POST'])
+@login_required
+def update_feedback():
+    args = {
+        'user_id': current_user.id,
+        'article_id': int(request.form['article_id']),
+        'opinion': request.form['opinion']
+    }
+    feedback = Feedback.query.filter_by(**args)
+    if feedback.scalar() is not None:
+        feedback.delete()
+    else:
+        new_feedback = Feedback(**args)
+        db.session.add(new_feedback)
+    db.session.commit()
+    return jsonify(result='success')
 
 
 if __name__ == '__main__':
