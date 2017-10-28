@@ -1,0 +1,8 @@
+alembic==0.9.6
+Flask==0.12.2
+Flask-Bcrypt==0.7.1
+Flask-Login==0.4.0
+Flask-SQLAlchemy=2.2
+Flask-WTF==0.14.2
+scikit-learn==0.19.0
+-e git+https://github.com/yhylord/zhihuscholar.git@6c984d2b441c6243a7edd26a8cf30e75af1aa79a#egg=zhihuscholar
