@@ -1,3 +1,2 @@
 graft zhihuscholar/templates
 graft zhihuscholar/static
-include zhihuscholar/users.sql
