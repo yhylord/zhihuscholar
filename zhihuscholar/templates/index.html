@@ -1,25 +1,38 @@
 {% extends "base.html" %}
+{% block script %}
+<script type="text/javascript">
+    var $$ = mdui.JQ;
+    SCRIPT_ROOT = {{ request.script_root|tojson }};
+    var update = function () {
+        var article_id = $$(this).attr('data-id');
+        var opinion = $$(this).attr('data-opinion');
+        console.log(article_id);
+        console.log(opinion);
+        $$.ajax({
+            method: 'POST',
+            url: SCRIPT_ROOT + '/_update_feedback',
+            data: {
+                article_id: article_id,
+                opinion: opinion
+            }
+            // TODO add feedback on the page
+            /*success: function () {
+                if (opinion === 'like') {
+                    var icon = $(this).children()[0]
+                }
+            }*/
+        });
+    };
+    $$('.feedback').on('click', update);
+</script>
+{% endblock %}
 {% block main %}
 <main class="mdui-m-t-5" id="main">
     <div class="mdui-container">
         <div class="mdui-row">
-            <div class="mdui-card mdui-col-md-8 mdui-col-offset-md-2">
-                <div class="mdui-card-primary">
-                    <div class="mdui-card-header-title">《学而》篇（一）</div>
-                    <div class="mdui-card-header-subtitle">论语</div>
-                </div>
-                <div class="mdui-card-content">
-                    <div class="mdui-typo">
-                        《学而》是《论语》第一篇的篇名。《论语》中各篇一般都是以第一章的前二三个字作为该篇的篇名。《学而》一篇包括16章，内容涉及诸多方面。其中重点是「吾日三省吾身」；「节用而爱人，使民以时」；「礼之用，和为贵」以及仁、孝、信等道德范畴。
-                        <!-- TODO Add collapse -->
-                    </div>
-                </div>
-                <div class="mdui-card-actions">
-                    <button class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">favorite_border</i></button>
-                    <button class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">delete</i></button>
-                    <button class="mdui-btn mdui-btn-icon mdui-float-right"><i class="mdui-icon material-icons">expand_more</i></button>
-                </div>
-            </div>
+            {% for article in articles %}
+                {% include 'article_card.html' %}
+            {% endfor %}
         </div>
     </div>
 </main>

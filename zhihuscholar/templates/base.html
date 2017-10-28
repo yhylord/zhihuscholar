@@ -5,8 +5,6 @@
     <title>{{ title }} - Zhihu Scholar</title>
     <link href="//cdn.bootcss.com/mdui/0.3.0/css/mdui.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://cdn.bootcss.com/mdui/0.3.0/js/mdui.min.js" defer></script>
-    {% block script %}{% endblock %}
 </head>
 <body>
 <header class="mdui-appbar">
@@ -28,5 +26,7 @@
     </div>
 </header>
 {% block main %}{% endblock %}
+<script src="https://cdn.bootcss.com/mdui/0.3.0/js/mdui.min.js"></script>
+{% block script %}{% endblock %}
 </body>
 </html>

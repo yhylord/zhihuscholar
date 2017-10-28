@@ -1,14 +1,19 @@
-from flask import session, render_template, redirect, url_for
-from flask_login import login_required, login_user, logout_user
+from flask import jsonify, render_template, redirect, request, url_for
+from flask_login import current_user, login_required, login_user, logout_user
+from sqlalchemy.sql import func
 from zhihuscholar import app, bcrypt, db, login_manager
 from .forms import LoginForm, RegisterForm
-from .models import User
+from .models import Article, Feedback, User
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', title='Home')
+    if current_user.is_authenticated and current_user.is_recommendable():
+        articles = current_user.recommender.recommend(5)
+    else:
+        articles = Article.query.order_by(func.random()).limit(5).all()
+    return render_template('index.html', title='Home', articles=articles)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -23,7 +28,8 @@ def register():
         new_user = User(name=form.name.data, email=form.email.data, password=password_hash)
         db.session.add(new_user)
         db.session.commit()
-        return redirect(url_for('login'))
+        login_user(new_user)
+        return redirect(url_for('index'))
     return render_template('register.html', title='Register', form=form)
 
 
@@ -52,6 +58,24 @@ def logout():
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+
+@app.route('/_update_feedback', methods=['POST'])
+@login_required
+def update_feedback():
+    args = {
+        'user_id': current_user.id,
+        'article_id': int(request.form['article_id']),
+        'opinion': request.form['opinion']
+    }
+    feedback = Feedback.query.filter_by(**args)
+    if feedback.scalar() is not None:
+        feedback.delete()
+    else:
+        new_feedback = Feedback(**args)
+        db.session.add(new_feedback)
+    db.session.commit()
+    return jsonify(result='success')
 
 
 if __name__ == '__main__':
